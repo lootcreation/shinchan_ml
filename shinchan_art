@@ -1,0 +1,151 @@
+#linear regression
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_diabetes
+
+# Load the dataset
+diabetes = load_diabetes()
+
+# Extract features (X) and target (y)
+X = diabetes.data[:, np.newaxis, 0]  # Features (only one independent variables)
+y = diabetes.target  # Target variable (dependent variable)
+
+# Display dataset details
+print("Feature Names:", diabetes.feature_names)
+print("X shape:", X.shape)  # (442, 10) → 442 samples, 10 features
+print("y shape:", y.shape)  # (442,) → 442 target values
+
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize the Linear Regression model
+model = LinearRegression()
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Predict on the test set
+y_pred = model.predict(X_test)
+
+new_value = [[0.05]]  # Example input for prediction
+new_prediction = model.predict(new_value)
+print("Prediction for new value:", new_prediction)
+
+# Predict a new value
+# new_value = [[0.05]]  # Replace with your desired input
+# new_prediction = model.predict(new_value)
+# print("Prediction for new value:", new_prediction)
+
+# Plot the results
+plt.scatter(y_test, y_pred, color='blue', label='Predicted vs Actual')
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], color='red', linestyle='--', label='Ideal Fit')
+plt.xlabel('Actual Values')
+plt.ylabel('Predicted Values')
+plt.title('Linear Regression Model')
+plt.legend()
+plt.show()
+
+
+
+
+
+
+
+
+
+
+#losistic regression
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_iris
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# Load the Iris dataset
+iris = load_iris()
+
+# Features (X) and target (y)
+X = iris.data  # 150 samples, 4 features
+y = iris.target  # 150 samples, 3 classes (setosa, versicolor, virginica)
+
+# Display dataset details
+print("Feature Names:", iris.feature_names)
+print("X shape:", X.shape)  # (150, 4) → 150 samples, 4 features
+print("y shape:", y.shape)  # (150,) → 150 target labels
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize the Logistic Regression model
+model = LogisticRegression(max_iter=200)
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Predict on the test set
+y_pred = model.predict(X_test)
+
+# Prediction for a new sample
+new_value = [[5.1, 6.5, 1.8, 0.7]]  # Example feature values for prediction
+new_prediction = model.predict(new_value)
+print("Prediction for new value:", iris.target_names[new_prediction])
+
+# Evaluate the model
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+print("Classification Report:\n", classification_report(y_test, y_pred))
+
+# Plotting the results
+plt.scatter(y_test, y_pred, color='blue', label='Predicted vs Actual')
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], color='red', linestyle='--', label='Ideal Fit')
+plt.xlabel('Actual Values')
+plt.ylabel('Predicted Values')
+plt.title('Logistic Regression Model on Iris Dataset')
+plt.legend()
+plt.show()
+
+
+
+
+
+#svm classificataion linear
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, classification_report
+
+# Load dataset
+iris = load_iris()
+X, y = iris.data[:, :2], iris.target
+
+# Split and scale
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Train SVM
+model = SVC(kernel='linear')
+model.fit(X_train, y_train)
+
+# Evaluate
+y_pred = model.predict(X_test)
+new_value = [[4.0, 3.0]]  # Example new value for prediction
+new_value_scaled = scaler.transform(new_value)
+predicted_class = model.predict(new_value_scaled)
+print("Predicted class for new value:", predicted_class)
+print("Predictions:", y_pred)
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print(classification_report(y_test, y_pred))
+
+
