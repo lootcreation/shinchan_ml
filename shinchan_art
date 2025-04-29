@@ -152,6 +152,55 @@ print(classification_report(y_test, y_pred))
 
 
 
+
+#upate code with random forest with svm
+
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, classification_report
+
+# Load dataset
+iris = load_iris()
+X, y = iris.data[:, :2], iris.target
+
+# Split and scale
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Train SVM
+model = SVC(kernel='linear')
+model1 = RandomForestClassifier(n_estimators=100, random_state=0)
+model.fit(X_train, y_train)
+model1.fit(X_train, y_train)
+
+# Evaluate
+y_pred = model.predict(X_test)
+y_pred1 = model1.predict(X_test)
+new_value = [[4.0, 3.0]]  # Example new value for prediction
+new_value_scaled = scaler.transform(new_value)
+predicted_class = model.predict(new_value_scaled)
+print("Predicted class for new value:", predicted_class)
+print("Svm Predictions:", y_pred)
+print(" Svm Accuracy:", accuracy_score(y_test, y_pred))
+print("Random Forest Accuracy:", accuracy_score(y_test, y_pred1))
+print("Random Forest Predictions:",(y_test, y_pred1))
+print("svm ",classification_report(y_test, y_pred))
+print("random_forest",classification_report(y_test, y_pred1))
+
+
+
+
+
+
+
+
+
 #k_clustering
 
 
