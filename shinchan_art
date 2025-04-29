@@ -149,3 +149,47 @@ print("Accuracy:", accuracy_score(y_test, y_pred))
 print(classification_report(y_test, y_pred))
 
 
+
+
+
+#k_clustering
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.cluster import KMeans
+from sklearn.metrics import confusion_matrix,accuracy_score,classification_report
+
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+model = KMeans(n_clusters=3, random_state= 42)
+model.fit(X)
+y_pred = model.predict(X)
+
+# Print the confusion matrix
+print("features: ", iris.feature_names)
+print("target: ", iris.target_names)
+print(confusion_matrix(y, y_pred))
+print(accuracy_score(y, y_pred))
+print(classification_report(y, y_pred))
+
+# Prediction for a new sample
+new_value = [[5.1, 6.5, 1.8, 0.7]]  # Example feature values for prediction
+new_prediction = model.predict(new_value)
+print("Prediction for new value:", iris.target_names[new_prediction])
+
+
+# Plot the clusters
+# plt.figure(figsize=(8, 6))
+plt.scatter(X[:, 0], X[:, 1], c=y_pred, cmap='viridis', marker='o', edgecolor='k', s=50)
+plt.scatter(model.cluster_centers_[:, 0], model.cluster_centers_[:, 1], c='red', s=200, alpha=0.75, marker='X')
+plt.title('KMeans Clustering of Iris Dataset')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.grid(True)
+plt.show()
+
